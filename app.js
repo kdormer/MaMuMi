@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const app = express();
+require('dotenv').config();
 
 // routes
 const indexRouter = require('./routes/index');
@@ -29,7 +30,7 @@ const i18n = new I18n({
   defaultLocale: 'en',
   cookie: 'lang',
   directory: path.join(__dirname, 'locales')
-})
+});
 app.use(i18n.init);
 
 // app locals - all templates can see these
@@ -66,12 +67,10 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', {error: err} );
 });
 
 module.exports = app;

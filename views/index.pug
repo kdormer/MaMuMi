@@ -6,7 +6,7 @@ block content
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap")
     #animation
-      video(autoplay muted id='loading-animation') 
+      video(preload playsinline autoplay muted id='loading-animation').intro-animation
         source(src='/s/anim/splash.mp4' type='video/mp4')
         
     div.hidden#hidden-page
@@ -15,14 +15,13 @@ block content
           ul.nav.me-auto
             li.nav-item
               a(href="https://mamumi.eu"): img(src="/s/img/logo.png", alt="MaMuMi", width="90.22", height="50.75")#logo
-            li.nav-item#beta beta
           .btn-group.language-select
-            button.btn.lang-btn
-              img(src=`/s/img/${__('lang.current.code')}.png`, alt="", srcset="")
+            button.btn.lang-btn#language-button
+              img(src=`/s/img/${__('lang.current.code')}.png`, alt="", width="21.6", height="14.4", srcset="")
               |&nbsp;
               = __('lang.current.name')
             button(data-bs-toggle="dropdown", aria-expanded="false").btn.dropdown-toggle-split
-              img(src="/s/img/dropdown.png", alt="", srcset="")
+              img(src="/s/img/dropdown.png", alt="", width="23.2", height="12.8", srcset="")
               span.visually-hidden Toggle Dropdown
             ul.dropdown-menu
               li.dropdown-item
@@ -32,44 +31,57 @@ block content
               li.dropdown-item
                 img(src=`/s/img/${__('lang.2.code')}.png`, alt="", srcset="")
                 |&nbsp;
-                a(href="#", data-lang=`"${__('lang.2.code')}"`).nav-link-lang= __('lang.2.name')
+                a(href="#", data-lang=`${__('lang.2.code')}`).nav-link-lang= __('lang.2.name')
               li.dropdown-item
                 img(src=`/s/img/${__('lang.3.code')}.png`, alt="", srcset="")
                 |&nbsp;
-                a(href="#", data-lang=`"${__('lang.3.code')}"`).nav-link-lang= __('lang.3.name')
+                a(href="#", data-lang=`${__('lang.3.code')}`).nav-link-lang= __('lang.3.name')
               li.dropdown-item
                 img(src=`/s/img/${__('lang.4.code')}.png`, alt="", srcset="")
                 |&nbsp;
-                a(href="#", data-lang=`"${__('lang.4.code')}"`).nav-link-lang= __('lang.4.name')
+                a(href="#", data-lang=`${__('lang.4.code')}`).nav-link-lang= __('lang.4.name')
               li.dropdown-item
                 img(src=`/s/img/${__('lang.5.code')}.png`, alt="", srcset="")
                 |&nbsp;
-                a(href="#", data-lang=`"${__('lang.5.code')}"`).nav-link-lang= __('lang.5.name')
+                a(href="#", data-lang=`${__('lang.5.code')}`).nav-link-lang= __('lang.5.name')
 
-      .container-fluid: .row
-        .col-lg-4
+      .container-fluid#content-window: .row
+        //- Journey Select / Journey View column
+        .col-lg-4.order-lg-1.order-xl-1.order-xxl-1.order-2.order-sm-2.order-md-2#journey-window
+          //- Journey List
           .container#journey-list
             h1= __('index.journey.select')
             .journey-scroll
               each j in journeys
                 .row.journey-item(data-id=`${j.id}`, id=`journey-row-${j.id}`)
-                  .col
-                    h1.journey-name= j.name
-                    .journey-short-desc= j.subtitle
-                  .col.play-col.hidden
+                  .journey-item-left
+                    h1.journey-name= j.name[lang]
+                    .journey-short-desc= j.subtitle[lang]
+                  span.journey-item-middle
+                  .hidden.journey-item-right
                     img(src="/s/img/play.png", alt="", srcset="").play-img
-
+                  span.journey-item-right-right
+              .col-lg-12#journey-footer
+          //- Journey Display
           .container.hidden#journey-display
-            .row: h1#journey-name Name 
-            .row: h1#journey-subtitle Subtitle 
-            .row.player-row: audio(src="", controls)#journey-audio-player
-            .row.fade-out: p#journey-description Desc
-            .row: a(href="#")#close-journey Close Journey
-        .col-lg-8.map
+            .row.journey-header
+              .journey-header-left
+                h1#journey-name Name
+                h2#journey-subtitle Subtitle 
+              .journey-header-right#close-cross-col
+                a(href="#").close-journey-btn: img(src="/s/icons/close.png", alt="", srcset="")#close-cross
+            .row.player-row: #journey-audio-player
+              button.player-button#play-button: img(src="/s/icons/play.png", alt="", srcset="").play-pause-icon
+              //- button.player-button#pause-button: img(src="/s/icons/pause.png", alt="", srcset="").play-pause-icon
+              progress#seek-slider(name="", max="100", value="0")
+            .row.journey-desc-row: p#journey-description Desc
+            .row.close-journey-row: a(href="#").close-journey-btn#close-journey= __('index.journey.close')
+        //- Map Column
+        .col-lg-8.map.order-lg-2.order-xl-2.order-xxl-2.order-1.order-sm-1.order-md-1
 
 
           #gMap(style="width:100%;height:100%;")
           #testOut
 
       script(type="module", src="/s/js/index.mjs")
-    script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgQsUmoRWeiRlclZbkSmn3vIFEmJZaBN4")
+    script(src=`https://maps.googleapis.com/maps/api/js?key=${process.env.APP_MAPS_API_KEY}`)

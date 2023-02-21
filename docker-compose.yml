@@ -8,5 +8,12 @@ services:
       dockerfile: ./Dockerfile
     environment:
       NODE_ENV: production
+    volumes:
+      - mamumi-audio:/mamumi/static/audio
+      - mamumi-db:/mamumi/db
     ports:
       - 3000:3000
+
+volumes:
+  mamumi-audio:
+  mamumi-db:

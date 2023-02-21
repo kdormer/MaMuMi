@@ -154,31 +154,44 @@ function _deletePoint(pointNumber) {
 
 // ### Submit journey to the db ###
 
-function _createJourney() {
+function _createJourney(isUpdate) {
     const journeyForm = document.getElementById('journey-form');
     if (markerArray.length < 2) {
         alert('Journey requires start and finish!');
     } else if (journeyForm.checkValidity()) {
-        // construct journey
-        const forename = document.getElementById('name').value;
-        const surname = document.getElementById('subtitle').value;
-        const journey = new Journey(forename, surname, null);
-
+        
+        // construct names
+        const names = {
+            en: document.getElementById('name_en').value,
+            es: document.getElementById('name_es').value,
+            el: document.getElementById('name_el').value,
+            bg: document.getElementById('name_bg').value,
+            no: document.getElementById('name_no').value,
+            it: document.getElementById('name_it').value,
+        }
+        
+        // construct subtitles
+        const subtitles = {
+            en: document.getElementById('subtitle_en').value,
+            es: document.getElementById('subtitle_es').value,
+            el: document.getElementById('subtitle_el').value,
+            bg: document.getElementById('subtitle_bg').value,
+            no: document.getElementById('subtitle_no').value,
+            it: document.getElementById('subtitle_it').value,            
+        }
+        
         // construct descriptions
-        const desc_en = document.getElementById('desc_en').value;
-        const desc_es = document.getElementById('desc_es').value;
-        const desc_bg = document.getElementById('desc_bg').value;
-        const desc_el = document.getElementById('desc_el').value;
-        const desc_no = document.getElementById('desc_no').value;
-        const desc_it = document.getElementById('desc_it').value;
         const descriptions = {
-            en: desc_en,
-            es: desc_es,
-            bg: desc_bg,
-            el: desc_el,
-            no: desc_no,
-            it: desc_it
+            en: document.getElementById('desc_en').value,
+            es: document.getElementById('desc_es').value,
+            el: document.getElementById('desc_el').value,
+            bg: document.getElementById('desc_bg').value,
+            no: document.getElementById('desc_no').value,
+            it: document.getElementById('desc_it').value
         };
+        // construct journey
+        const journey = new Journey(names, subtitles, null);
+        journey.order = document.getElementById('order').value;
         journey.addDescription(descriptions);
 
         getPoints().forEach(e => {
@@ -186,18 +199,36 @@ function _createJourney() {
         });
 
         const audioFile = document.getElementById('audio_file').files[0];
-
+        const oldAudioUri = document.getElementById('old-audio-uri');
         const formData = new FormData();
 
-        formData.append('journey', JSON.stringify(journey));
-        formData.append('audio_file', audioFile);
+        if (isUpdate) {
+            if (audioFile) {
+                formData.append('audio_file', audioFile);
+            } else {
+                journey.audio_uri = oldAudioUri.value;
+            }
+        } else {
+            formData.append('audio_file', audioFile);
+        }
 
-        fetch("/journeys", {
+        formData.append('journey', JSON.stringify(journey));
+        
+        const id = document.getElementById('journey-id').value;
+        const fetchUrl = isUpdate ? `/admin/journey/${id}/update` : "/admin/journey/create";
+        fetch(fetchUrl, {
             method: "POST",
             mode: "same-origin",
             body: formData
         }).then((res) => {
-            alert("Journey has been created");
+            if (res.status !== 200) {
+                alert("Server Error");
+            } else if (isUpdate) {
+                alert("Journey has been updated");
+                location.reload();
+            } else {
+                alert("Journey has been created");
+            }
         }).catch((error) => {
             alert(error.message);
         });
@@ -205,24 +236,6 @@ function _createJourney() {
         alert('invalid form');
     }
 }
-
-function _sendJourney(journey) {
-    console.log(JSON.stringify(journey));
-    fetch("/journeys", {
-        method: "POST",
-        mode: "same-origin",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(journey),
-    }).then((res) => {
-        alert("Journey has been created");
-    }).catch((error) => {
-        alert(error.message);
-    });
-}
-
 
 // ### Form layout and response code ###
 
@@ -234,7 +247,8 @@ window.onload = async () => {
     const _submitJourneyBtn = document.getElementById("journey-submit");
     _submitJourneyBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        _createJourney();
+        const isUpdate = _submitJourneyBtn.dataset.update !== undefined;
+        _createJourney(isUpdate);
     });
 
     const oldPoints = document.getElementById('old-points');

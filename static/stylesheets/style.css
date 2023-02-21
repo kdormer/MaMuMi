@@ -32,8 +32,16 @@ div.animation video {
   display: none;
 }
 
+.journey-form-col {
+  max-height: 99vh;
+  overflow-y: scroll;
+}
+
+
 div.map {
   height: auto;
+  padding-left: 0%;
+  padding-right: 0%;
 }
 
 /* ===== Login ===== */
@@ -84,6 +92,10 @@ div.login-wrapper .form-check-label {
 }
 
 /* ===== Admin Dashboard ===== */
+#logout-icon {
+  padding-left: 15px;
+}
+
 .main-content {
   margin-left: 5rem;
 }
@@ -190,18 +202,33 @@ table .form-title h3 {
   width: 100%;
 }
 
-@media (max-width: 960px) {
-  .fade-out {
-    max-height: 150px;
-    text-overflow: ellipsis;
-  }
-
-  div.map {
-    height: 600px;
-
-  }
+#language-button{
+  padding-right: 0px;
 }
 
+#journey-window {
+  height: calc(100vh - 66.75px);
+  padding-right: 0%;
+  overflow-x: visible;
+  overflow-y: visible;
+}
+
+#journey-display {
+  max-height: calc(100vh - 66.75px);
+  overflow-y: visible;
+  padding: 24px;
+}
+
+.journey-desc-row {
+  max-height: calc(70vh - 45px);
+  overflow-y: scroll;
+}
+
+p#journey-description {
+
+}
+
+/* Navbar */
 .nav-link-lang {
   color: #a9a9a9;
 }
@@ -229,20 +256,91 @@ body {
   color: #333333;
 }
 
+#content-window {
+  height: 92vh;
+  overflow-y: visible;
+}
+
 #journey-list {
-  max-height: calc(100vh - 66.75px);
-  min-height: 600px;
+  margin-right: 0em;
+  padding-right: 0%;
+  overflow-y: hidden;
+}
+
+#journey-footer {
+  height: 66.75px;
 }
 
 .journey-scroll {
-  max-height: 86vh;
-  overflow:scroll;
+  height: 76vh;
+  margin-right: 0em;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
+/* JOURNEY ITEM FLEX BOX*/
 .journey-item {
   padding-top: 0.33em;
   padding-bottom: 0.33em;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: space-around;
+  margin-right: 0px;
+}
+
+
+.journey-item-left, .journey-item-right {
+  width: auto;
+}
+
+.journey-item-middle {
+  width: 1px;
+  flex-grow: 1;
+}
+
+.journey-item-right {
+  align-self: center;
+  padding-right: 2rem;
+}
+
+.journey-item-right-right {
+  width: 1px;
+  flex-grow: 1;
+  max-width: 1px;
+}
+
+.play-img {
+  max-width: 2rem;
+}
+
+/* END JOURNEY ITEM FLEX BOX*/
+
+#close-cross {
+  display: none;
+}
+
+#close-journey {
+  background-color: #04adbf;
+  display: block;
+  width: 10rem;
+  background: #4E9CAF;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  line-height: 25px;
+  text-decoration: none;
+  box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.5);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1em;
+}
+
+.close-journey-row {
+  padding-left: 60%;
+  
 }
 
 .journey-selected {
@@ -257,7 +355,7 @@ body {
 }
 
 /* journey select title */
-.journey-item > * > h1, #journey-display > * > h1 {
+.journey-item > * > h1, #journey-display * > h1 {
   font-family: 'Poppins', sans-serif;
   font-size: 1.25em;
   color: #333333;
@@ -283,16 +381,227 @@ body {
   background: #555;
 }
 
-.play-col {
-  align-self: center;
+/* AUDIO PLAYER */
+#journey-audio-player {
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  padding: 12px;
 }
 
-.play-img {
-  max-width: 2.5em;
+.player-button {
+  outline: none;
+  border:none;
+  background-color: #f2f2f2;
 }
 
+.play-pause-icon {
+  width: 22px;
+  height: 22px;
+}
+
+#play-button {
+  padding-right: 1rem;
+}
+
+progress#seek-slider {
+  background-color: #cfcfcf;
+  width: 80%;
+}
+
+#seek-slider {
+  height: 15px;
+  min-width:40%;
+  max-width: 90%;
+}
+progress[value]::-webkit-progress-bar {
+  background-color: #cfcfcf;
+}
+
+progress[value]::-webkit-progress-value {
+  background-color:#04adbf;
+}
+
+#close-cross-col {
+  display: none;
+}
+
+/* Just for 'beta' text next to logo. Will be removed in prod */
 #beta {
   font-family: 'Poppins', sans-serif;
   font-size: 1.25em;
   color: #b2b2b2;
 }
+
+.journey-header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-content: space-between;
+}
+
+.intro-animation {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+}
+
+h1#journey-name {
+  font-size: 2.25rem;
+}
+
+h2#journey-subtitle {
+  font-size: 1.5rem;
+}
+
+.error-container {
+  background: linear-gradient(
+    342deg,
+    rgba(4, 138, 191, 1) 22%,
+    rgba(217, 91, 173, 1) 56%,
+    rgba(77, 60, 134, 1) 76%
+  )
+  fixed;
+  width: 100%;
+  height: 100%;
+}
+
+img#error-logo {
+  width: 100%;
+}
+
+h1#error-code {
+  color: #fff;
+  text-align: center;
+  font-size: 8rem;
+}
+
+/* Phone Screen */
+@media (max-width: 992px) {
+  .fade-out {
+    max-height: 150px;
+    text-overflow: ellipsis;
+  }
+
+  div.map {
+    height: 45vh;
+  }
+
+  .journey-scroll {
+    width: inherit;
+    overflow-y: scroll;
+    height: 45vh;
+  }
+
+  #journey-list {
+    min-width: 100vw;
+    margin-right: 0%;
+    margin-left: 0%;
+    max-height: 100%;
+  }
+
+  .play-img {
+    max-width: 4rem;
+  }
+
+  #journey-list > h1 {
+    padding-top: 1rem;
+    font-size: 2.5rem;
+  }
+
+  h1.journey-name {
+    font-size: 2rem;
+  }
+
+  .journey-short-desc, h2#journey-subtitle {
+    font-size: 1.5rem;
+  }
+
+  #journey-window {
+    height: calc(100vh - 45vh - 67px);
+    overflow: hidden;
+    padding-left: 0%;
+  }
+
+  #journey-display {
+    height: auto;
+    overflow-y: visible;
+    padding: 24px;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    max-width: 95vw;
+  }
+
+  #journey-description {
+    height: auto;
+    overflow-y: scroll;
+  }
+
+  .close-journey-row, .close-journey-row  * {
+    display: none;
+  }
+
+  #close-cross {
+    display: block;
+    max-width: 2.5rem;
+  }
+
+  #journey-name {
+    display: inline;
+  }
+
+  #close-cross-col {
+    display: inline;
+    text-align: center;
+    padding-right: 2.5rem;
+    padding-top: 0.25rem;
+  }
+
+  .play-pause-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  h1#journey-name {
+    font-size: 2.5rem;
+  }
+
+  h1#journey-subtitle {
+    font-size: 3.5rem;
+  }
+
+  #journey-description {
+    font-size: 1.25rem;
+    padding-top: 1rem;
+  }
+
+  #journey-audio-player {
+    padding-top: 1rem;
+    white-space: nowrap;
+  }
+
+  .journey-header-left {
+    flex-grow: 4;
+    max-width: fit-content;
+  }
+
+  .journey-header-right {
+    flex-grow: 1;
+    max-width: 1rem;
+  }
+
+  .journey-desc-row {
+    overflow-y: scroll;
+    max-height: 35vh;
+    width: 95vw;
+    overflow-y: scroll;
+  }
+
+  progress#seek-slider {
+    max-width: 60vw;
+  }
+}
+/* End Phone Screen */
