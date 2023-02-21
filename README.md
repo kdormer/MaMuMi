@@ -1,16 +1,5 @@
-<!-- TOC -->
-
-- [MaMuMi](#mamumi)
-    - [Current Status](#current-status)
-- [Docker Configuration](#docker-configuration)
-- [MariaDB](#mariadb)
-    - [IMPORTANT SETUP CONFIGURATION](#important-setup-configuration)
-- [Journey Classes](#journey-classes)
-- [Populate Journeys](#populate-journeys)
-
-<!-- /TOC -->
 # MaMuMi
-MaMuMi “Mapping the Music of Migration” is a two-year European, Erasmus+ musical inheritance project focused on talking about music and song as a tool for intercultural competency. It involves the collection, editing and uploading of “Song Stories”, stories about music to an interactive app. These stories focus on “inheritance tracks”; the songs or music that migrants have inherited, the discussion of which acts as a platform for diversity awareness in dedicated MaMuMi “Song Worlds” Workshops’.
+[MaMuMi](https://mamumi.eu/) “Mapping the Music of Migration” is a two-year European, Erasmus+ musical inheritance project focused on talking about music and song as a tool for intercultural competency. It involves the collection, editing and uploading of “Song Stories”, stories about music to an interactive app. These stories focus on “inheritance tracks”; the songs or music that migrants have inherited, the discussion of which acts as a platform for diversity awareness in dedicated MaMuMi “Song Worlds” Workshops’.
 
 ## Current Status
 Currently a map view is displayed with geoJSON data.
